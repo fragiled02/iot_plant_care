@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link id="style1" rel="stylesheet" href="../posya_css/headwind.css?1">
+    <link id="style2" rel="stylesheet" href="../posya_css/mqttx.css">
+    <style>
+    .h100{height: 100%;} .w100{width: 100%;} 
+    * {box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+        .fc{align-items: center; justify-content: center;}
+        .abso{position: absolute;}
+        .rel{position: relative;}
+    </style>
+</head>
+<body>
+<div class="flex-col w100 p0 m0 oxyh" id="mainContainer" style="height: 100vh;">
+
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js" integrity="sha512-Y5n0fbohPllOQ21fTwM/h9sQQ/1a1h5KhweGhu2zwD8lAoJnTgVa7NIrFa1bRDIMQHixtyuRV2ubIx+qWbGdDA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" id="fun" src="../posya_js/functions.js"></script>
+<script type="text/javascript" id="mqtt_src" src="../posya_js/mqttx.js"></script>
+<script>
+
+
+</script>
+<style>
+body{
+background: linear-gradient(313.77deg, #FFDCB3 42.22%, #E7F68A 92.96%, #A2C579 132.26%);
+}
+
+@media screen and (orientation:landscape) {
+
+}
+
+@media screen and (orientation:portrait) {
+
+}
+</style>
+</html>
+
+<script>
+
+window.onload = function(){
+let nowww = Date.now();
+
+const god = document.getElementById('mqtt_src');
+const fun = document.getElementById('fun');
+const style1= document.getElementById('style1');
+const style2 = document.getElementById('style2');
+god.src = "../posya_js/mqttx.js?"+nowww;
+fun.src = "../posya_js/functions.js?"+nowww;
+
+let href1 = "../posya_css/headwind.css?"+nowww.toString();
+let href2 = "../posya_css/mqttx.css?"+nowww.toString();
+
+style1.setAttribute("href", href1);
+style2.setAttribute("href", href2);
+}
+
+
+</script>

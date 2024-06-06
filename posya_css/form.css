@@ -1,0 +1,432 @@
+:root {
+  --warna1: #03e9f4;
+  --warna2: #48FF8B;
+  --warna3: #8F8F8F;
+}
+/*
+:root {
+  --warna1: #03e9f4;
+  --warna2: #48FF8B;
+  --warna3: #8F8F8F;
+}
+*/
+
+.login-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: clamp(10px, 60%, 500px);
+    padding: 40px;
+    background: rgba(0,0,0, .3);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.3);
+    border-radius: 10px;
+    transition: 1s;
+}
+
+.xl {
+    width: clamp(10px, 95%, 2000px);
+}
+
+.form-xl{
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.form-xl .user-box{
+  margin-top: 16px;
+}
+
+.login-box:hover{
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,.3),
+                0 0 25px rgba(0,0,0,.3),
+                0 0 50px rgba(0,0,0,.3),
+                0 0 100px rgba(0,0,0,.3);
+    transform: scale(102%);
+}
+
+
+.login-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+    transition: 1s;
+}
+
+.login-box h2:hover {
+  color: var(--warna1);
+}
+
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box input{
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+.login-box .user-box textarea {
+  width: 100%;
+  padding: 32px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 0px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+.login-box .user-box label {
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+}
+.login-box .select-box label {
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+}
+.login-box .select-box select{
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin-bottom: 26px;
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    color: #fff;
+}
+.login-box .select-box select option{
+    border: none;
+    outline: none;
+    font-size: 16px;
+  
+}
+.login-box .select-box select option:hover{
+    background-color: black;
+    color: #fff;
+
+}
+.login-box .select-box select:focus ~ label,
+.login-box .select-box select:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: var(--warna1);
+  font-size: 12px;
+}
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: var(--warna1);
+  font-size: 12px;
+}
+
+
+.login-box form button {
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    padding: 10px 20px;
+    color: var(--warna1);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+  background: var(--warna1);
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
+}
+
+.login-box button span {
+  position: absolute;
+  display: block;
+}
+
+.login-box button span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--warna1));
+  animation: btn-anim1 2s linear infinite;
+}
+
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,100% {
+    left: 100%;
+  }
+}
+
+.login-box button span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--warna1));
+  animation: btn-anim2 2s linear infinite;
+  animation-delay: .5s
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,100% {
+    top: 100%;
+  }
+}
+
+.login-box button span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, var(--warna1));
+  animation: btn-anim3 2s linear infinite;
+  animation-delay: 1s
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,100% {
+    right: 100%;
+  }
+}
+
+.login-box button span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, var(--warna1));
+  animation: btn-anim4 2s linear infinite;
+  animation-delay: 1.5s
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}
+
+.border1 span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--warna1));
+  animation: btn-anim1 2s linear infinite;
+}
+
+
+.border1 span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--warna1));
+  animation: btn-anim2 2s linear infinite;
+  animation-delay: .5s
+}
+
+
+
+.border1 span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, var(--warna1));
+  animation: btn-anim3 2s linear infinite;
+  animation-delay: 1s
+}
+
+
+
+.border1 span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, var(--warna1));
+  animation: btn-anim4 2s linear infinite;
+  animation-delay: 1.5s
+}
+
+.border1{
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    padding-left: 2px;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    color: var(--warna1);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    letter-spacing: 4px;
+    text-align: center;
+}
+
+.border1 span{
+  position: absolute;
+}
+
+.border1:hover {
+  background: var(--warna1);
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
+}
+
+
+.border2{
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    color: var(--warna1);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    letter-spacing: 4px;
+    text-align: center;
+}
+
+.border2 span{
+  position: absolute;
+}
+
+.border2:hover {
+ 
+  color: #fff;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1);
+     
+}
+
+.border3 span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--warna1));
+  animation: btn-anim1 2s linear infinite;
+}
+
+
+.border3 span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--warna1));
+  animation: btn-anim2 2s linear infinite;
+  animation-delay: .5s
+}
+
+
+
+.border3 span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, var(--warna1));
+  animation: btn-anim3 2s linear infinite;
+  animation-delay: 1s
+}
+
+
+
+.border3 span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, var(--warna1));
+  animation: btn-anim4 2s linear infinite;
+  animation-delay: 1.5s
+}
+
+.border3{
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    color: var(--warna1);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    letter-spacing: 4px;
+    text-align: center;
+}
+
+.border3 span{
+  position: absolute;
+}
+
+.border3:hover {
+  background: var(--warna1);
+  color: #fff;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
+}

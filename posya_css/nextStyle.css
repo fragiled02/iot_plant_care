@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css?family=Varela+Round");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Varela Round', sans-serif;
+}
+
+.menu_container {
+  max-width: 500px;
+  height: 100px;
+  border-radius: 5px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  background-image: linear-gradient(to top, #8F8F8F 0%, #b5b5b5 100%);
+  transform: perspective(1000px) rotateX(-40deg) rotateY(0deg) rotateZ(0deg);
+  transform-origin: center center 0px;
+  transition: all 0.6s ease-out;
+}
+.menu_container:hover {
+  transform: perspective(1000px) rotateX(355deg) rotateY(0deg) rotateZ(0deg);
+  box-shadow: 0 10px 40px rgba(0,0,0,0);
+}
+.menu_container .menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 100%;
+  height: 100%;
+}
+.menu_container .menu a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 17px;
+  transition: all 0.1s linear;
+    cursor: pointer;
+}
+.menu_container .menu a:hover {
+  transform: scale(1.2, 1.2);
+}
+.menu_container-2 {
+  background-image: linear-gradient(120deg, #8F8F8F 0%, rgba(15, 116, 175, 0.719) 100%);
+  transform: perspective(1000px) rotateX(0deg) rotateY(45deg) rotateZ(0deg);
+}
+.menu_container-2:hover {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}
+.menu_container-3 {
+  background-image: linear-gradient(to top, #a7a6cb 0%, #8989ba 52%, rgba(15, 116, 175, 0.719) 100%);
+  transform: perspective(1000px) rotateX(0deg) rotateY(-45deg) rotateZ(0deg);
+}
+.menu_container-3:hover {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}
+.menu_container-4 {
+  background-image: linear-gradient(-20deg, #ddd6f3 0%, #faaca8 100%, rgba(15, 116, 175, 0.719) 100%);
+  transform: perspective(1000px) rotateX(45deg) rotateY(5deg) rotateZ(-15deg);
+}
+.menu_container-4:hover {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}
+.menu_container-5 {
+  background-image: linear-gradient(to top, #a3bded 0%, rgba(15, 116, 175, 0.719) 100%);
+  transform: perspective(1000px) rotateX(180deg) rotateY(0deg) rotateZ(0deg);
+}
+.menu_container-5:hover {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}

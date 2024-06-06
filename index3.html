@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Posyandu</title>
+    <link rel="stylesheet" href="./posya_css/style.css?128" />
+  </head><style>body {
+    background-image: url("./posya_img/landingpage/ruangan2.jpg");
+    background-size: cover;}</style>
+  <body>
+    <div class="wrapper">
+      <div class="nav">
+        <div class="logo">
+          <a href="#">
+            <p>E POSYANDU</p>
+          </a>
+        </div>
+        <ul>
+            <li><a href="dashboard.html" id="btnDash" style="display: none;">Dashboard</a></li>
+            <li><a href="rewgister.html" id="btnReg" style="display: block;">Register</a></li>
+            <li><a href="lowgin.html" id="btnLig" style="display: block;">Login</a></li>
+            <li><a href="/php/logout.php" id="btnLog" style="display: none;">Logout</a></li>
+          
+        </ul>
+      </div>
+      <div class="header">
+        <h1>WEBSITE <span>E POSYANDU</span></h1>
+      </div>
+      <div class="content-header">
+        <p>
+          Selamat datang di aplikasi E POSYANDU!
+          Dengan aplikasi ini, anda dapat memperkuat kolaborasi antara para orang tua dan tim medis POSYANDU
+          Tujuan kami adalah meningkatkan pemantauan dan perawatan anak , sehingga dapat tumbuh sehat dan bahagia.
+          Bergabunglah dengan komunitas kami dan rasakan manfaatnya.
+          Dengan aplikasi ini bersama sama menciptakan masa depan yang lebih cerah bagi generasi penerus kita!
+        </p>
+        <br />
+        
+      </div>
+      <div class="image1">
+        <p id="context"></p>
+        <img src="./posya_img/landingpage/Jaga.jpg">
+      </div>
+    </div>
+<script type="text/javascript" src="./posya_js/functions.js"></script>
+<script defer>
+
+    let btnDash = document.getElementById("btnDash");
+    let btnReg = document.getElementById("btnReg");
+    let btnLig = document.getElementById("btnLig");
+    let btnLog = document.getElementById("btnLog");
+    let context = document.getElementById("context");
+    let x;
+
+    CRUD_master("/php/user/get_user.php").then(
+        function (value) { 
+                x = value[0].name;
+                if(x != undefined)
+                {
+                    
+                    btnDash.style.display = "block";
+                    btnLog.style.display = "block";
+                    btnReg.style.display = "none";   
+                    btnLig.style.display = "none";0
+
+                    if(value[0].utype == 'o' || value[0].utype == ')'){
+                        context.innerHTML = "Welcome, Ortu: " + x;
+                    }else{
+                        context.innerHTML = "Welcome, Petugas: " + x;
+                    }
+
+                };
+            },
+        function (error) { alert("Database Error!") }
+    );
+</script>
+    <style>
+
+
+
+    @media screen and (orientation:landscape) {
+        #context{
+            margin-right: 25vw;
+        }
+        .nav ul li {
+            font-size: 20px;
+        }
+        .header {
+            top: 40%;
+            left: 72%;
+        }
+        .image1 {
+            top: 50%;
+            left: 22%;
+        }
+    }
+    @media screen and (orientation:portrait) {
+        #context{
+            margin-right: 15vw;
+        }
+        .nav ul li {
+            font-size: 20px;
+        }
+        .header {
+            top: 40%;
+            left: 52%;
+        }
+        .content-header{
+            margin-top: 50px;
+        }
+
+        .image1 {
+            top: 60%;
+            left: 22%;
+        }
+    }
+
+
+    </style>
+  </body>
+</html>

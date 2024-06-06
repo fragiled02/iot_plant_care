@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link id="style1" rel="stylesheet" href="../posya_css/headwind.css?1">
+    <link id="style2" rel="stylesheet" href="../posya_css/mqttx.css">
+    <style>
+    .h100{height: 100%;} .w100{width: 100%;} 
+    * {box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+        .fc{align-items: center; justify-content: center; text-align: center;}
+        .abso{position: absolute;}
+        .rel{position: relative;}
+    </style>
+</head>
+<body>
+<div class="flex-col w100 p0 m0 oxyh" id="mainContainer" style="height: 100vh;">
+    <div class="flex-5 oxyh fc" style="background: #016A70;">
+
+    </div>
+    <div class="flex-row flex-50 oxyh fc w100 p0 m0 cardList1" id="cardContainer">
+
+
+            <div class="card">
+                <p></p>
+                <div class="imgCon">
+                <img src="../posya_img/Temperature.png">
+                </div>
+                <p class="xl ma">Temperature</p>
+                <p class="bold">Keterangan: </p>
+                <p class="temp_txt">mikrokontroler mbledos</p>
+                <p class="temp_txt">mikrokontroler mbledos</p>
+      
+            </div>
+
+            <div class="card">
+                <p></p>
+                <div class="imgCon">
+                <img src="../posya_img/Waterdrops.png">
+                </div>
+                <p class="xl ma">Humidity</p>
+                <p class="bold">Keterangan: </p>
+                <p class="humid_txt">mikrokontroler mbledos</p>
+                <p class="humid_txt">mikrokontroler mbledos</p>
+      
+            </div>
+
+            <div class="card">
+                <p></p>
+                <div class="imgCon">
+                <img src="../posya_img/sun.png">
+                </div>
+                <p class="xl ma">Luminosity</p>
+                <p class="bold">Keterangan: </p>
+                <p class="light_txt">mikrokontroler mbledos</p>
+            </div>
+    </div>
+    <div class="flex-45 oxyh flex-row" id="graph_container">
+        <div class="flex-10 flex-col">
+            <div class="flex-25 graph_left"></div>
+            <div class="flex-25 graph_left"></div>
+            <div class="flex-25 graph_left"></div>
+            <div class="flex-25 graph_left"></div>
+        </div>
+        <div class="flex-70 flex-row" id="the_graph">
+        </div>
+        <div class="flex-20 flex-col" style="padding-left: 1vw;">
+            <p class="graph_txt">a</p>
+            <p class="graph_txt">a</p>
+            <p class="graph_txt">a</p>
+            <p class="graph_txt">a</p>
+            <p class="graph_txt">a</p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js" integrity="sha512-Y5n0fbohPllOQ21fTwM/h9sQQ/1a1h5KhweGhu2zwD8lAoJnTgVa7NIrFa1bRDIMQHixtyuRV2ubIx+qWbGdDA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" id="fun" src="../posya_js/functions.js?199"></script>
+<script type="text/javascript" id="mqtt_src" src="../posya_js/mqttx.js?20"></script>
+<script defer>
+//main topic
+let tpc0 = 'negawatt';
+
+//set subs
+subscription = [tpc0+'/0/#', tpc0+'/1/#',tpc0+'/2/#',tpc0+'/3/#',tpc0+'/4/#']
+
+//make client
+makeClient();
+setSub(subscription);
+
+//variables
+const cardContainer = document.getElementById("cardContainer");
+const all_temp_text = document.querySelectorAll(".temp_txt");
+const all_humid_text = document.querySelectorAll(".humid_txt");
+const all_light_text = document.querySelectorAll(".light_txt");
+const graph_txt = document.querySelectorAll(".graph_txt");
+const the_graph = document.getElementById("the_graph");
+const graph_marks = document.querySelectorAll(".graph_left");
+
+let graphlets;
+
+let temp=[0,0];
+let humid=[0,0];
+let light=[0,0];
+let trsh = [0,0,0];
+let actuators = [0,0,0];
+let health_array = [];
+
+for (let i = 0; i < 50; i++) {
+    health_array[i] = 0;
+    const graphlet = document.createElement("div");
+    graphlet.classList.add("graphlet");
+    graphlet.innerText = "";
+    graphlet.addEventListener("mouseover", function () {
+        graph_txt[1].innerHTML = "Health: <br>"+parseInt(health_array[i]) + "%";
+    });
+    the_graph.insertBefore(graphlet, the_graph.children[0]);
+    
+};
+graphlets = document.querySelectorAll(".graphlet");
+//receive msg
+setInterval(game_tick, 1000);
+function game_tick(){
+    temp[0] = parseFloat(get_msg(tpc0+'/0/0', true, temp[0]));
+    humid[0] = parseFloat(get_msg(tpc0+'/1/0', true, humid[0]));
+    temp[1] = parseFloat(get_msg(tpc0+'/0/1', true, temp[1]));
+    humid[1] = parseFloat(get_msg(tpc0+'/1/1', true, humid[1]));
+    light[0] = parseFloat(get_msg(tpc0+'/2/0', true, light[0]));
+
+    trsh[0] = parseFloat(get_msg(tpc0+'/3/0', true, trsh[0]));
+    trsh[1] = parseFloat(get_msg(tpc0+'/3/1', true, trsh[1]));
+    trsh[2] = parseFloat(get_msg(tpc0+'/3/2', true, trsh[2]));
+
+    actuators[0] = get_msg(tpc0+'/4/0', true, actuators[0]);
+    actuators[1] = get_msg(tpc0+'/4/1', true, actuators[1]);
+    actuators[2] = get_msg(tpc0+'/4/2', true, actuators[2]);
+
+    all_temp_text[0].innerText = "Suhu Udara: "+temp[0]+"°C";
+    all_temp_text[1].innerText = "Suhu Tanah: "+temp[1]+"°C";
+    all_humid_text[0].innerText = "Kelembapan Udara: "+humid[0]+"%";
+    all_humid_text[1].innerText = "Kelembapan Tanah: "+humid[1]+"%";
+    all_light_text[0].innerText = "Intensitas Cahaya: "+light[0]+" Lux";
+
+    graph_txt[2].innerText =  "Fan: "+actuators[0];
+    graph_txt[3].innerText =  "Pump: "+actuators[1];
+    graph_txt[4].innerText =  "Lights: "+actuators[2];
+
+    
+    
+    let avg_sensors = [0,0,0];
+    avg_sensors[0] = Math.abs((temp[0]+temp[1])/2);
+    avg_sensors[1] = Math.abs((humid[0]+humid[1])/2);
+    avg_sensors[2] = light[0];
+
+    let maxs = [0,0,0];
+    maxs[0] = Math.max(avg_sensors[0], trsh[0]);
+    maxs[1] = Math.max(avg_sensors[1], trsh[1]);
+    maxs[2] = Math.max(avg_sensors[2], trsh[2]);
+
+    let mins = [0,0,0];
+    mins[0] = Math.min(avg_sensors[0], trsh[0]);
+    mins[1] = Math.min(avg_sensors[1], trsh[1]);
+    mins[2] = Math.min(avg_sensors[2], trsh[2]);
+
+    let avg = (((mins[0]/maxs[0])*100)+((mins[1]/maxs[1])*100)+((mins[2]/maxs[2])*100))/3;
+
+    health_array[0] = avg;
+    graph_txt[0].innerHTML = "Current Health: <br>"+avg.toFixed(3)+ "%";
+    let maxv = Math.max(...health_array);
+    console.log('maxv',avg)
+            for (let i = 0; i < 50; i++) {
+
+                if (i < 49 && health_array[48 - i] > 0) {
+                    health_array[49 - i] = health_array[48 - i];
+                };  
+                curr_height = (health_array[49 - i]/maxv)*100;
+                graphlets[i].style.height = curr_height + "%";
+                graphlets[i].style.webkitFilter = "hue-rotate(" + curr_height / 2 + "deg)"; 
+
+            };
+
+    graph_marks[0].innerText = parseInt(maxv);
+    graph_marks[1].innerText = parseInt(maxv / 4 * 3);
+    graph_marks[2].innerText = parseInt(maxv / 2);
+    graph_marks[3].innerText = parseInt(maxv / 4);   
+   
+};
+
+
+
+
+
+
+</script>
+<style>
+*{
+    font-family: 'Post No Bills Colombo ExtraBold';
+}
+
+body{
+    background: linear-gradient(313.77deg, #C3F571 42.22%, #A2C579 132.26%);
+}
+
+.cardList1{
+    width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+    padding: 1rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 20px 2px rgba(255, 255, 255, 0.2);
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+    height: fit-content;
+    padding: 0px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+}
+
+.card:nth-of-type(1){
+    background-color: #FCDDC1;
+}
+.card:nth-of-type(2){
+    background-color: #CCEDDF;
+}
+.card:nth-of-type(3){
+    background-color: #EEF976;
+}
+
+.card .imgCon{
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.card p{
+    margin: 0px 0px 4px 16px;
+    font-size: 22px;
+    text-align: left;
+}
+.card .xl{
+    font-size: 26px;
+}
+.card .ma{
+    margin: 0px;
+    text-align: center;
+}
+
+.card p:first-child{
+    margin-top: 16px;
+}
+
+.card p:last-child{
+    margin-bottom: 16px;
+}
+
+.card .icons{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.card .icons img{
+    cursor: pointer;
+}
+#graph_container{
+    padding-top: 2vh;
+}
+.graphlet{
+    flex-basis: 2%;
+    background-color: #D2DE32;
+    margin-top: auto;
+}
+.graph_left{
+    text-align: right;
+    font-size: 22;
+    padding-right: 2vw;
+}
+@media screen and (orientation:landscape) {
+    #closeBtn{
+        width: 12vw;
+    }  
+    .card{
+        max-width: 100vw;
+    }
+    .card .imgCon img{
+        height: 10vw;
+        width: 10vw;
+    }
+    .card .icons img{
+        height: 4vw;
+        width: 4vw;
+    }
+}
+@media screen and (orientation:portrait) {
+    #closeBtn{
+        width: 18vw;
+    }  
+    .card{
+        max-width: 100vw;
+    }
+    .card .imgCon img{
+        height: 18vw;
+        width: 18vw;
+    }
+    .card .icons img{
+        height: 8vw;
+        width: 8vw;
+    }
+    .card .icons img:first-child{
+        margin-right: 30px;
+    }
+}
+</style>
+</html>
+
+<script defer>
+
+window.onload = function(){
+let nowww = Date.now();
+
+const god = document.getElementById('mqtt_src');
+const fun = document.getElementById('fun');
+const style1= document.getElementById('style1');
+const style2 = document.getElementById('style2');
+god.src = "../posya_js/mqttx.js?"+nowww;
+fun.src = "../posya_js/functions.js?"+nowww;
+
+let href1 = "../posya_css/headwind.css?"+nowww.toString();
+let href2 = "../posya_css/mqttx.css?"+nowww.toString();
+
+style1.setAttribute("href", href1);
+style2.setAttribute("href", href2);
+}
+
+
+</script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./posya_css/form.css?dss">
+    <link rel="stylesheet" href="./posya_css/headwind.css?dw">
+    <title>Login</title>
+    <style>* {box-sizing: border-box; scroll-behavior: smooth; }</style>
+</head>
+<body>
+<div class="flex-col w100 gradient p0 m0" style="height: 100vh; position: relative; align-items: center; justify-content: center;">
+<div class="login-box flex-col oxyh m0" style="align-items: left; " id="logBox">
+  <h2>Login</h2>
+  <form action="php/loggin.php" method="post">
+    <div class="user-box">
+      <input type="text" name="email" required>
+      <label>E-mail</label>
+    </div>
+    <div class="user-box">
+      <input type="password" name="password" required>
+      <label>Password</label>
+    </div>
+    <div>
+    <button>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      Login
+    </button>
+  </div>
+  </form>
+</div>
+</div>
+<style>
+
+
+@media screen and (orientation:landscape) {
+
+}
+
+@media screen and (orientation:portrait) {
+  #logBox{
+    width: 90%;  
+  }
+}
+
+</style>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Lite Edition</title>
+    <style>
+        * {box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+        body{ margin: 0px; padding: 0px; overflow-x: hidden; border: none;}
+        html{ border: none; } .h100{height: 100%;} .w100{width: 100%;} 
+        #mainContainer{
+            align-items: left; 
+            height: 100vh;
+            overflow-x: hidden;
+        }
+        .fc{align-items: center; justify-content: center;}
+        .abso{position: absolute;}
+        .rel{position: relative;}
+        
+    </style>
+    <link rel="stylesheet" href="./posya_css/form.css?1">
+    <link rel="stylesheet" href="./posya_css/headwind.css?1">
+    <link rel="stylesheet" href="./posya_css/nextStyle.css?2">
+</head>
+<body>
+<div class="rel" id="containerBody">
+
+  <div class="abso logo" id="logo">
+   <p>121NEGAWATT</p>
+  </div>
+
+  <div class="abso" id="img1">
+   <img src="./posya_img/landingpage/arduino-electronics-integrated-circuit-ic.jpg">
+  </div>
+
+  <div class="abso" id="title">
+  <div id="theTitle">
+    <h1>WEBSITE 
+    <span>IoT</span><br>
+    <span>Smart Plant Care</span>
+  </div>
+
+  </h1>
+    <p>
+      Selamat datang di aplikasi E POSYANDU!
+      Dengan aplikasi ini, anda dapat memperkuat kolaborasi antara para orang tua dan tim medis POSYANDU
+      Tujuan kami adalah meningkatkan pemantauan dan perawatan anak, sehingga dapat tumbuh sehat dan bahagia.
+      Bergabunglah dengan komunitas kami dan rasakan manfaatnya.
+      Dengan aplikasi ini bersama sama menciptakan masa depan yang lebih cerah bagi generasi penerus kita!
+    </p>
+  </div>
+
+  <div class="abso" id="p1">
+    <p>
+     
+    </p>
+  </div>
+
+  <div class="flex-10 fc p0 m0" id="containerNav">
+    <div class="menu_container">
+      <div class="menu">
+        <a href="dashboard.html" id="btnDash" style="display: none;">Dashboard</a>
+        <a href="rewgister.html" id="btnReg" style="display: block;">Register</a>
+        <a href="lowgin.html" id="btnLig" style="display: block;">Login</a>
+        <a href="/php/logout.php" id="btnLog" style="display: none;">Logout</a>
+      </div>
+    </div>
+  </div>
+  <div class="flex-90">
+
+  </div>  
+
+</div>
+<script type="text/javascript" src="./posya_js/functions.js"></script>
+<script defer>
+
+    let btnDash = document.getElementById("btnDash");
+    let btnReg = document.getElementById("btnReg");
+    let btnLig = document.getElementById("btnLig");
+    let btnLog = document.getElementById("btnLog");
+    let context = document.getElementById("context");
+    let x;
+
+    CRUD_master("/php/user/get_user.php").then(
+        function (value) { 
+                x = value[0].name;
+                if(x != undefined)
+                {
+                    
+                    btnDash.style.display = "block";
+                    btnLog.style.display = "block";
+                    btnReg.style.display = "none";   
+                    btnLig.style.display = "none";
+
+                };
+            },
+        function (error) { alert("Database Error!") }
+    );
+</script>
+<style>
+  .logo {
+    float: left;
+    margin-left: 46px;
+    padding: 0;
+    font-family: "Raleway", sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .logo p {
+    text-decoration: none;
+    color: rgba(162, 212, 255, 0.719);
+  }
+
+  .menu_container{
+    margin: auto;
+  }
+  #img1 img{
+    width: 100%;
+  }
+  #title{
+    text-align: center;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.65);
+    transition: 1s;
+  }
+
+  #title h1 {
+    color: black;
+    text-align: left;
+    font-family: "Noto Serif Jp", sans-serif;
+    font-size: 50px;
+  }
+  #img1{
+    transition: 1s;
+  }
+  #title span {
+    color: rgba(15, 116, 175, 0.719);
+  }
+  #title p {
+    text-align: justify;
+  }
+
+
+
+@media screen and (orientation:landscape) {
+  #img1 {
+    top: 25vh;
+    left: 10vw;
+    width: 40vw;
+    transform: perspective(1000px) rotateX(0deg) rotateY(15deg) rotateZ(0deg);
+  }
+  #img1:hover {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  #title{
+    top: 33vh;   
+    left: 54vw;
+    width: 35vw;
+    transform: perspective(1000px) rotateX(0deg) rotateY(-15deg) rotateZ(0deg);
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
+  }
+  #title:hover {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+}
+@media screen and (orientation:portrait) {
+  #img1 {
+    top: 18vh;
+    left: 20vw;
+    width: 60vw;
+  }
+  #title{
+    top: 70vh;   
+    left: 50vw;
+    width: 94vw;
+    text-align: justify;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+  }
+  #theTitle h1{
+    font-size: 35px;
+    text-align: center;
+  }
+  .logo{
+    top: 9vh;
+  }
+
+}
+
+body{background-image: url("./posya_img/landingpage/wp4902407.jpg"); background-size: cover;}
+
+</style>
+</body>
+</html>

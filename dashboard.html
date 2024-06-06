@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+        body{ margin: 0px; padding: 0px; overflow-x: hidden; border: none; }
+        html{ border: none; } .h100{height: 100%;} .w100{width: 100%;} 
+        #mainContainer{
+            align-items: left; 
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+        .fc{align-items: center; justify-content: center;}
+        .abso{position: absolute;}
+        .rel{position: relative;}
+        
+    </style>
+    <link rel="stylesheet" href="./posya_css/form.css?69">
+    <link rel="stylesheet" href="./posya_css/main.css?70">
+    <link rel="stylesheet" href="./posya_css/headwind.css?72">
+    <title>Dashboard</title>
+</head>
+<body>
+<div class="flex-col w100 m0 p0" id="mainContainer">
+<div id="toggleMenu" class="abso border3 flex-col fc">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+<img id="toggleImg" src="/posya_img/Asset/menu.png">
+</div>
+<div id="displayUsername" class="abso cw">
+<div class="flex-col fc">
+    <div id="displayUsernameX"></div>
+    <div class="flex-row">
+        <div id="home"><a href="./index.html" class="cw">Home</a></div>
+        <div id="logout" class="cw anIcon">Logout</div>
+    </div>
+</div>
+
+</div>
+
+<div id="conSpeech">
+    <div class="flex-row" style="height: 4vh;">
+        <div class="flex-80"></div>
+        <div class="flex-10 thebbor1 thebr1 anIcon" id="dragSpeech"></div>
+    </div>
+    <div class="flex-col w100">
+        <div class="flex-row w100 fc">
+            <div class="flex-col flex-10" id="textBack">
+
+                <div class="cimg border3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <img src="posya_img\audio\previous.png" alt="Back">
+                </div>
+
+            </div>
+            <div class="flex-80 fc" style="text-align: center;" id="conSpeaker">
+                <p>Assistant</p>
+            </div>
+            <div class="flex-col flex-10" id="textNext">
+                <div class="cimg border3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <img src="posya_img\audio\next.png" alt="Next">
+                </div>
+
+            </div>
+        </div>
+        <div class="flex-row w100 fc">
+            <div class="flex-90 fc" style="text-align: center;" >
+                <p id="theText1">Click Next To Continue</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="mainHeader" class="abso flex-row m0 p0 w100 thebg1">
+    <div class="flex-col m0 p0 flex-30 ab">
+    
+    </div>
+    <div class="flex-col m0 p0 flex-70 fc">
+        <h1 id="headerTxt" class="cw anIcon">Welcome to IoT Smart Plant Care Dashboard</h1>
+    </div>
+    <div class="flex-col m0 p0 flex-30">
+    </div>
+   
+</div>
+
+
+<div class="flex-col m0 abso" id="menuContainer">
+
+</div>
+
+<div class="entity taskbar flex-row" id="taskbar">
+
+</div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="./posya_js/functions.js?5"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js" integrity="sha512-Y5n0fbohPllOQ21fTwM/h9sQQ/1a1h5KhweGhu2zwD8lAoJnTgVa7NIrFa1bRDIMQHixtyuRV2ubIx+qWbGdDA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" id="mqtt_src" src="../posya_js/mqttx.js"></script>
+<script defer>
+
+// dynamic src
+let nowww = Date.now();
+const god = document.getElementById('mqtt_src');
+god.src = "../posya_js/mqttx.js?"+nowww;
+
+//main topic
+let tpc0 = 'negawatt';
+
+//subs
+subscription = [tpc0+'/#']
+
+//setup
+makeClient();
+setSub(subscription);
+
+//send message
+setInterval(game_tick, 10000);
+function game_tick(){
+    send_msg(tpc0+'/10/0', 10);
+}
+
+
+
+
+
+//url menu disini
+let srcList;
+let srcListPar = 
+["posya_menu/home.html", "posya_menu/temperature.html",
+"posya_menu/humidity.html","posya_menu/light.html","posya_menu/tuning.html", "https://wokwi.com/projects/384053704810348545"];
+
+let srcListEmp = ["posya_form/tambah_kunjungan.html"];
+
+let titleList;
+let titleIframePar = ["Home", "Temperature", "Humidity", "Light", "Tuning", "Wokwi"];
+let titleIframeEmp = ["Mbuh"];
+
+let accName = "none";
+let isParent = true;
+
+let mainContainer = document.getElementById('mainContainer');
+let taskbar = document.getElementById('taskbar');
+const logout = document.getElementById("logout");
+const displayNav = document.getElementById("displayUsername");
+const displayUsername = document.getElementById("displayUsernameX");
+const header = document.getElementById("mainHeader");
+const headerTxt = document.getElementById("headerTxt");
+const toggler = document.getElementById("toggleMenu"); 
+const toggImg = document.getElementById("toggleImg"); 
+const menu = document.getElementById("menuContainer");
+const titleIframe = document.getElementById("titleIframe")
+let menulets;
+
+//speech shit
+const conSpeech = document.getElementById('conSpeech');
+const textNext = document.getElementById('textNext');
+const textBack = document.getElementById('textBack');
+const speechText = document.getElementById('theText1');
+
+let voices = window.speechSynthesis.getVoices();
+let isSpeaking = false;
+let spchVol = 0.5;
+let spchRate = 1;
+
+//tutorial data
+let quest1 = [
+['Hello, how are you?', '.'],
+['I will be your assistant today!', '.'],
+['Welcome to the main dashboard!', '.'],
+['I will guide you to understand the Menu!', '.'],
+['The menus are on the left. There are 5 menus!', '.'],
+['The first menu is the home menu. It displays basic parameters.', 0],
+['The second menu is under construction.', 1],
+['The third menu is also under construction.', 2],
+['The fourth menu is the same.', 3],
+['The fifth menu is the tuning menu. You can tune the treshold for each parameters now.', 4],
+['The sixth menu is wokwi. Without this, the dashboard will not run.', 5],
+['thats all i can show you for now.', '.'],
+['a', 'end']
+];
+
+//trigger tutorial
+headerTxt.addEventListener('click', runTutorial);
+function runTutorial(){
+    if(isParent){
+    if(confirm("Apakah Anda ingin Menjalani Tutorial? ")){
+        quest(quest1);
+    };
+    }else{
+        alert("Anda bukan Orang Tua!");
+    }
+
+};
+
+makeShitMoveLegacy(conSpeech);
+
+// menu shit
+//menggerakkan iframe container
+
+
+//menambahkan eventlistener ke ikon menu agar dapat menavigasi iframe
+function runMenu(){
+    addMenuLets();
+    menulets = document.getElementsByClassName("letzCon");
+    for (i = 0, len = menulets.length; i < len; i++) {
+        addMenuletsListener(i);
+    };
+};
+
+let content_template_text = `
+    <div class="entity menu flex-col m0 p0 oxyh contentContainer" id="example">
+        <div class="w100 static_entity flex-row-rev z99 anIcon max_h_20px content_nav">
+            <div class="content_nav_icons flex-col center"><p class="p0 m0">x</p></div>
+            <div class="content_nav_icons flex-col center"><p class="p0 m0">O</p></div>
+            <div class="content_nav_icons flex-col center"><p class="p0 m0">-</p></div>
+            <div class="content_nav_icons flex-col center"><p class="p0 m0">+</p></div>
+            <div class="content_nav_icons flex-col center txt_center poof"><p class="p0 m0 txt_center">R</p></div>
+            <div class="content_nav_icons flex-col center txt_center poof"><p class="p0 m0 txt_center">L</p></div>
+        </div>
+
+        <iframe class="flex-100 w100 h100" style="z-index: 3;"></iframe>
+
+    </div>
+`;
+
+//fungsi untuk menambahkan html ikon
+let listAsset;
+let listAssetO = ["./posya_img/Home.png", "./posya_img/Temperature.png",
+ "./posya_img/Waterdrops.png", "./posya_img/sun.png",
+"./posya_img/message-edit.png",
+"./posya_img/1702549602100.png"
+];
+let listAssetE = ["./posya_img/Home.png", "./posya_img/Temperature.png",
+ "./posya_img/Waterdrops.png", "./posya_img/sun.png",
+"./posya_img/message-edit.png",
+"./posya_img/1702549602100.png"
+];
+function addMenuLets(){
+    for (i = 0, len = srcList.length; i < len; i++) {
+        const menuletzCon = document.createElement("div");
+        menuletzCon.classList.add("letzCon");
+        const menuletz = document.createElement("div");
+        for(let i=0; i<4; i++){
+            const span = document.createElement("span");
+            menuletz.appendChild(span);
+        };
+        const image = document.createElement('img');
+        image.setAttribute("src", listAsset[i]);
+        menuletz.classList.add("menuLets");
+        menuletz.classList.add("border2");
+        menuletz.appendChild(image);    
+        menuletzCon.appendChild(menuletz);
+        menu.appendChild(menuletzCon);
+        
+    }
+}
+
+
+//fungsi untuk menambahkan listener ikon
+function addMenuletsListener(index){
+    menulets[index].addEventListener("click", function(){
+        let content_template = makeHTML(content_template_text);
+        let src = srcList[index] + "?" + Math.random().toString();
+        let title = titleIframePar[index];
+
+        boom(mainContainer, taskbar, content_template, src, title);
+
+    });
+}
+
+function hideMenu(){
+    menu.style.display = "none";
+}
+function showMenu(){
+    menu.style.display = "block";
+    displayNav.style.zIndex = 5;
+}
+
+// escape key toggle
+document.onkeydown = function (e) {
+  e = e || window.event; //capture the event, and ensure we have an event
+  var key = e.code || e.key || e.which || e.keyCode; //find the key that was pressed
+  if (key === "KeyEscape" || key === "Escape" || key === 27) { //this is for 'T'
+    toggleMenu(); setTimeout(test1, 2000);
+  };
+};
+
+function randoAnim(target, type, count){
+    let anime1 = " 0.8s linear";
+    let final = type+rando(count)+anime1;
+    target.style.animation = final;
+}
+
+
+//untuk menyembunyikan/menampilkan menu
+let aniMenuCount = 2;
+toggler.addEventListener("click", toggleMenu);
+let isToggled = true;
+function toggleMenu(){
+    if(isToggled){
+
+        randoAnim(menu, 'close', aniMenuCount);
+        toggler.style.webkitFilter  = "invert(40%)";
+        toggler.style.webkitFilter  = "opacity(30%)";
+        toggImg.style.webkitFilter  = "opacity(30%)";
+        displayNav.style.zIndex = 3;
+        setTimeout(hideMenu, 810);
+        
+
+    }else{
+        toggler.style.webkitFilter  = "invert(0%)";
+        toggler.style.webkitFilter  = "opacity(100%)";
+        toggImg.style.webkitFilter  = "opacity(100%)";
+        randoAnim(menu, 'open', aniMenuCount);
+        showMenu();
+        
+    };
+    isToggled = !isToggled;
+}
+
+//logout
+logout.addEventListener('click', function(){
+    if(confirm("Logout Akun "+accName+"?")){
+        location.href = "./php/logout.php";
+    };
+});
+
+//mengambil data user dari database
+CRUD_master("/php/user/get_user.php").then(
+    function (value) { 
+            x = value[0].name;
+            accName = value[0].name;
+            quest1[0][0] = 'Hello '+ accName + ", How are You?";
+            if(x != undefined)
+            {   
+                if(value[0].utype == 'o' || value[0].utyoe == 'O'){
+                    displayUsername.innerText = "Logged in as User: " + x;
+                    srcList = srcListPar;
+                    titleList = titleIframePar;
+                    listAsset = listAssetO;
+                    runMenu(); 
+
+                }else{
+                    displayUsername.innerText = "Logged in as User Juga: " + x;
+                    srcList = srcListEmp;
+                    titleList = titleIframeEmp;
+                    listAsset = listAssetE;
+                    runMenu();
+                    isParent = false;
+                }
+            }else{
+                displayUsername.innerText = "Error: " + value;
+            }
+            
+        },
+    function (error) { alert("Database Error!") }
+);
+
+function speak(text){
+    let spch = new SpeechSynthesisUtterance(text);
+    spch.rate = spchRate;
+    spch.volume = spchVol;
+    isSpeaking = true;
+    speechSynthesis.speak(spch);
+    spch.addEventListener('end', function(){
+        isSpeaking = false;
+        speechText.innerHTML = speechText.innerText + '<br><br>' + " Click Next to Continue!";
+    });
+}
+
+function pause(){
+    if(speechSynthesis.speaking){speechSynthesis.pause();};
+}
+function resume(){
+    speechSynthesis.resume();
+}
+function stop(){
+    speechSynthesis.resume();
+    speechSynthesis.cancel();
+}
+
+function quest(raw){
+    let arr = raw;
+    conSpeech.style.display = 'block';
+    let current = 0;
+
+    function end(){
+        conSpeech.style.display = 'none';
+        action(-1);
+        return true;
+    };
+
+    function action(actionIndex){
+        for(let i=0; i<menulets.length; i++){
+            if(i==actionIndex){
+                menulets[i].style.animation = 'highlight1 1s linear alternate infinite';
+            }else{
+                menulets[i].style.animation = 'none';
+            }
+        }
+    }
+
+    speechText.innerHTML = 'Click Next To Continue';
+
+    function back(){
+        current = current-2;
+        if(current<0){end();};
+        stop();
+        console.log(current);console.log('haha');
+        speak(arr[current][0].toString());
+        speechText.innerHTML = arr[current][0];
+        if(arr[current][1] != '.'){
+            action(arr[current][1]);
+        };
+        current = current + 1;
+    }
+    function next(){
+        if(arr[current][1] == 'end'){end();};
+
+        
+        if(arr[current][1] != '.'){
+            action(arr[current][1]);
+        };
+
+        stop();
+        speak(arr[current][0].toString());
+        speechText.innerHTML = arr[current][0];
+        current = current + 1;
+
+    }
+
+    textBack.addEventListener('click', back);
+    textNext.addEventListener('click', next);
+}
+
+
+
+
+
+
+
+</script>
+<style>
+
+@keyframes switch1 {
+    0% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);  }
+    50%{transform: perspective(1000px) rotateX(0deg) rotateY(180deg) rotateZ(0deg); }
+    100% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+}
+
+
+
+#home{
+    margin-right: 30px;
+}
+
+#mainHeader{
+    height: 9vh;
+    z-index: 2;
+}
+#conSpeech{
+    position: absolute;
+    resize: both;
+    overflow: auto;
+    z-index: 420;
+    display: none;
+}
+#textNext{
+    align-items: flex-start;
+}
+
+#textBack{
+    align-items: flex-end;
+}
+#textBack .cimg{
+    height: 100%;
+    background: #f8f3e8;
+}
+#textNext .cimg{
+    height: 100%;
+    background: #f8f3e8;
+}
+#textBack .cimg img{
+    height: 100%;
+}
+#textNext .cimg img{
+    height: 100%;
+}
+#conSpeech{
+    color: white;
+}
+#conSpeaker{
+    border-bottom: 2px solid white;
+}
+#headerTxt{
+    z-index: 3;
+}
+#displayUsername{
+    z-index: 3;
+}
+#toggleMenu{
+    background: #f8f3e8;
+    margin: 1.2vh;
+    z-index: 420;
+}
+
+#menuContainer{
+    position: absolute;
+    background-color: none;
+    resize: both;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 69;
+    padding: 1vh;
+}
+
+.contentContainer{
+    z-index: 50;
+}
+
+#theIframe{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.letzCon{
+    height: auto;
+}
+.menuLets{
+    margin: 2px;
+    transition: 0.6s;
+    display: flex;
+    background: #f8f3e8;
+    justify-content: center;
+    align-items: center;
+}
+.menuLets img{
+    transition: 0.6s;
+}
+.menuLets:hover{
+    border-color: none;
+}
+
+@media screen and (orientation:landscape) {
+    #displayUsername{
+        right: 10%;
+        top: 3%;
+    }
+    #conSpeech{
+        width: 80vw;
+        left: 10vw;
+        top: 70vh;
+    }
+    #textNext, #textBack{
+        height: 50px;
+    }
+
+    #conSpeaker{
+        font-size: 20px;
+    }
+    #theText{
+        font-size: 15px;
+    }
+    #mainHeader{
+        border: none;
+    }
+    #headerTxt{
+        display: block;
+    }
+    #toggleMenu{
+        width: 4vw;
+        height: 4vw;
+    }
+    #toggleMenu img{
+        width: 3.4vw;
+        height: 3.4vw;
+    }
+    #menuContainer{
+        width: 20vw;
+        height: 90vh; 
+        top: 9vw;   
+        left: 0;
+        transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg);
+        padding-left: 0;
+    }
+
+    .menuLets{
+        height: 4vw;
+        width: 4vw;
+    }   
+    .menuLets img{
+        height: 2.8vw;
+        width: 2.8vw;
+    }
+    .letzCon:hover > .menuLets{
+        margin-left: 2vw;
+        height: 5vw;
+        width: 5vw;
+        transform: rotate(135deg);
+        margin-top: 2vw;
+        margin-bottom: 2vw;
+    }
+    .letzCon:hover > .menuLets img{
+        transform: rotate(-135deg);
+        height: 3.5vw;
+        width: 3.5vw;
+    }
+    #contentHeader{
+        display: flex;
+    }
+    @keyframes close1 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg);}
+        50%{transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 9vw; padding-left: 1vh; }
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 100%; padding-left: 1vh; }
+    }
+
+
+    @keyframes open1 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 100%; padding-left: 1vh; }
+        50%{transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 9vw; padding-left: 1vh; }
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg); }
+    }
+   
+    @keyframes close2 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg); filter: opacity(100%);}
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(360deg) rotateZ(0deg); top: 100%; padding-left: 1vh; filter: opacity(0%);}
+    }
+
+
+    @keyframes open2 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(360deg) rotateZ(0deg); top: 100%; padding-left: 1vh; filter: opacity(0%);}
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg); filter: opacity(100%);}
+    }
+}
+
+@media screen and (orientation:portrait) {
+    @keyframes close1 {
+        0% {}
+        100% {top: 100%;}
+    }
+
+    @keyframes open1 {
+        0% {top: 100%;}
+        100% {}
+    }
+
+    @keyframes close2 {
+        0% {left: 0;}
+        100% {left: -20vw;}
+    }
+
+    @keyframes open2 {
+        0% {left: -20vw;}
+        100% {left: 0;}
+    }
+
+    #displayUsername{
+        right: 10%;
+        top: 3%;
+    }
+    #conSpeech{
+        width: 90vw;
+        left: 5vw;
+        top: 70vh;
+    }
+    #textNext, #textBack{
+        height: 60px;
+    }
+
+    #conSpeaker{
+        font-size: 20px;
+    }
+    #theText{
+        font-size: 15px;
+    }
+    #mainHeader{
+        border: none;
+    }
+    #headerTxt{
+        display: none;
+    }
+    #toggleMenu{
+        width: 12vw;
+        height: 12vw;
+    }
+    #toggleMenu img{
+        width: 12vw;
+        height: 12vw;
+    }
+    #menuContainer{
+        width: 100vw;
+        height: 87vh; 
+        top: 14vw;
+    }
+
+    #theIframe{
+        border: none;
+    }
+    .menuLets{
+        width: 12vw;
+        height: 12vw;
+        border: 2px solid black;
+        margin-top: 1vw;
+        margin-bottom: 1vw;
+    }   
+    .menuLets img{
+        width: 9vw;
+    }
+    .letzCon:hover > .menuLets{
+        margin-left: 4vw;
+        height: 14vw;
+        width: 14vw;
+        transform: rotate(135deg);
+        margin-top: 5vw;
+        margin-bottom: 5vw;
+        border: none;
+    }
+    .letzCon:hover > .menuLets img{
+        transform: rotate(-135deg);
+        height: 8vw;
+        width: 8vw;
+    }
+    #contentHeader{
+        display: none;
+    }
+}
+
+#mainContainer{
+    position: relative;
+}
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,100% {
+    left: 100%;
+  }
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,100% {
+    top: 100%;
+  }
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,100% {
+    right: 100%;
+  }
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}
+
+@keyframes highlight1 {
+  0% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid var(--warna1);
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+  }
+  40% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  45% {
+    border-left: 13px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  50% {
+    border-left: 23px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  55% {
+    border-left: 13px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  60% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  100% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid var(--warna1);
+  }
+}
+.letzCon:hover > .border2 span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--warna1));
+  animation: btn-anim1 2s linear infinite;
+}
+
+
+.letzCon:hover > .border2 span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--warna1));
+  animation: btn-anim2 2s linear infinite;
+  animation-delay: .5s
+}
+
+.letzCon:hover > .border2 span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(270deg, transparent, var(--warna1));
+  animation: btn-anim3 2s linear infinite;
+  animation-delay: 1s
+}
+
+.letzCon:hover > .border2 span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, var(--warna1));
+  animation: btn-anim4 2s linear infinite;
+  animation-delay: 1.5s
+}
+
+</style>

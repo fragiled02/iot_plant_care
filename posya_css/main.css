@@ -1,0 +1,124 @@
+:root {
+  --warna1: #03e9f4;
+  --warna2: #48FF8B;
+  --warna3: #8F8F8F;
+}
+
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif;
+    background-image: radial-gradient(circle, #243b55, #18435b, #084b5f, #005360, #005a5e);
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.entity{
+    position: absolute;
+    resize: both;
+    overflow: auto;
+}
+
+.static_entity{
+    position: absolute;
+}
+
+.content_nav{
+    color: var(--warna1);
+    margin-top: 10px;
+    padding-right: 1%;
+    padding-left: 7%;
+}
+
+
+
+.border{
+    border: 1px solid black;
+}
+
+.taskbar{
+    width: 100vw;
+    height: 5vh;
+    bottom: 0%;
+    z-index: 70;
+}
+
+.center{
+    justify-content: center;
+    align-items: center;
+}
+.content_nav_icons2{
+    flex-basis: 50%;
+}
+
+.taskbar_icons{
+    border-left: solid;
+    border-color: var(--warna1);
+}
+
+.taskbar_icons:hover {
+  background: var(--warna1);
+  color: #000;
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
+}
+
+.content_nav_icons:hover {
+  background: var(--warna1);
+  color: #000;
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
+}
+
+.content_nav_icons2:hover {
+  background: var(--warna1);
+  color: #000;
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
+}
+
+
+@media screen and (orientation:landscape) {
+.menu{
+    width: 71vw;
+    height: 80vh;
+}
+.taskbar_icons{
+    flex-basis: 8%;
+    color: var(--warna1);
+    font-size: 12px;
+}
+.content_nav_icons{
+    flex-basis: 5%;
+}
+
+}
+
+@media screen and (orientation:portrait) {
+.menu{
+    width: 100vw;
+    height: 100vh;
+}
+.taskbar_icons{
+    flex-basis: 25%;
+    color: var(--warna1);
+    font-size: 14px;
+}
+.content_nav_icons{
+    flex-basis: 15%;
+    font-size: 20px;
+}
+}
